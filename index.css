@@ -4,10 +4,18 @@
     --font-family: 'Inter';
 }
 h1 {
-    color: #FFF;
-    font-size: 100px;
+    color: #d62828;
+    font-size: 105px;
+	line-height: 80%;
     text-indent: -0.03em;
-    font-weight: 740;
+    font-weight: 900;
+}
+h2 {
+    color: #FFF;
+    font-size: 35px;
+	line-height: normal;
+    text-indent: -0.03em;
+    font-weight: 700;
 }
 p {
     color: #FFF;
@@ -16,3 +24,10 @@ p {
     text-indent: -0.03em;
     font-weight: 500;
 }
+@media screen and (max-width: 281px){
+	body {
+    margin-left: 0px;
+    margin-right: 1111px;
+}
+}
+
