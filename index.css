@@ -1,0 +1,18 @@
+@charset "utf-8";
+  @supports (font-variation-settings: normal)
+:root {
+    --font-family: 'Inter';
+}
+h1 {
+    color: #FFF;
+    font-size: 100px;
+    text-indent: -0.03em;
+    font-weight: 740;
+}
+p {
+    color: #FFF;
+    font-size: 24px;
+    letter-spacing: -0.055em;
+    text-indent: -0.03em;
+    font-weight: 500;
+}
