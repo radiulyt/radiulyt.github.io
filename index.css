@@ -17,13 +17,34 @@ h2 {
     text-indent: -0.03em;
     font-weight: 700;
 }
+h3 {
+    color: #FFF;
+    font-size: 30px;
+	line-height: 250%;
+    text-indent: -0.03em;
+    font-weight: 800;
+}
+h4 {
+    color: #FFF;
+    font-size: 20px;
+	line-height: 5%;
+    text-indent: -0.03em;
+    font-weight: 600;
+}
+h5 {
+    color: #FFF;
+    font-size: 15px;
+	line-height: 120%;
+    text-indent: -0.03em;
+    font-weight: 400;
+}
 p {
     color: #FFF;
     font-size: 24px;
 	line-height: 80%;
     letter-spacing: -0.055em;
     text-indent: -0.03em;
-    font-weight: 400;
+    font-weight: 500;
 }
 ul {
 	color: #FFF;
