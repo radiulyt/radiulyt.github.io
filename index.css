@@ -3,6 +3,15 @@
 :root {
     --font-family: 'Inter';
 }
+@media screen {
+    body {
+        background-color: #000000;
+        margin-left: 10px; !important
+        margin-right: 10px; !important
+    }
+}
+
+
 h1 {
     color: #d62828;
     font-size: 105px;
@@ -13,7 +22,7 @@ h1 {
 h2 {
     color: #FFF;
     font-size: 35px;
-	line-height: 215%;
+	line-height: 115%;
     text-indent: -0.03em;
     font-weight: 700;
 }
@@ -41,7 +50,7 @@ h5 {
 p {
     color: #FFF;
     font-size: 24px;
-	line-height: 80%;
+	line-height: 115%;
     letter-spacing: -0.055em;
     text-indent: -0.03em;
     font-weight: 500;
@@ -54,9 +63,4 @@ ul {
     text-indent: -0.03em;
     font-weight: 600;
 }
-@media screen and (max-width: 281px){
-	body {
-    margin-left: 0px;
-    margin-right: 1111px;
-}
-}
+
