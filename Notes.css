@@ -3,6 +3,7 @@
 :root {
     --font-family: 'Inter';
 }
+
 h1 {
     color: #d62828;
     font-size: 105px;
@@ -29,9 +30,10 @@ h3 {
 h4 {
     color: #FFF;
     font-size: 20px;
-	line-height: 5%;
+	line-height: 120%;
     text-indent: -0.03em;
     font-weight: 600;
+    margin-bottom: 0%;
 }
 h5 {
     color: #FFF;
