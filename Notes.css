@@ -29,19 +29,22 @@ h3 {
 }
 h4 {
     color: #FFF;
-    font-size: 20px;
+    font-size: 21px;
 	line-height: 120%;
     text-indent: -0.03em;
     font-weight: 600;
     margin-bottom: 0%;
+    letter-spacing: inherit;
 }
 h5 {
     color: #FFF;
-    font-size: 15px;
+    font-size: 16px;
 	line-height: 120%;
     text-indent: -0.03em;
     font-weight: 400;
 	letter-spacing: normal;
+    margin-top: 0.5%;
+    margin-bottom: 5%
 }
 p {
     color: #FFF;
