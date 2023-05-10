@@ -2,4 +2,4 @@
 
 
 # radiul
-creating a website using github pages to direct people towards my work.
+website for my notes and to tell people all my socials cause i am active on the interwebs.
