@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AQA Sociology Quiz (Dark Mode)</title>
+  <link rel="icon" type="image/x-icon" href="/9100957.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    .tabs {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tabs button {
+      margin: 5px;
+      padding: 10px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #ddd;
+      transition: background-color 0.2s;
+    }
+
+    .tabs button.active,
+    .tabs button:hover {
+      background-color: #6200ea;
+      color: white;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      border: 2px solid #444;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .option {
+      margin: 10px auto;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #2a2a2a;
+      border: 1px solid #666;
+      width: 90%;
+      max-width: 400px;
+      color: #f0f0f0;
+      transition: background-color 0.3s;
+    }
+
+    .option:hover {
+      background-color: #3a3a3a;
+    }
+
+    .option.correct {
+      background-color: #2e7d32;
+      color: white;
+      border-color: #4caf50;
+    }
+
+    .option.incorrect {
+      background-color: #c62828;
+      color: white;
+      border-color: #ef5350;
+    }
+
+    button.action {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #03a9f4;
+      color: white;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    button.action:hover {
+      background-color: #0288d1;
+    }
+
+    #hint, #summary {
+      font-style: italic;
+      color: #bbb;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .option {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+
+      button.action {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>AQA Sociology Quiz</h1>
+
+  <div class="tabs">
+    <button onclick="selectTopic('education')" class="active">Paper 1: Education</button>
+    <button onclick="selectTopic('families')">Paper 2: Families</button>
+    <button onclick="selectTopic('crime')">Paper 3: Crime</button>
+  </div>
+
+  <div class="card" id="card">
+    <h2 id="question">Click "Next" to begin</h2>
+    <p id="hint" style="display:none;"></p>
+    <div id="options"></div>
+    <p id="summary" style="display:none;"></p>
+    <button class="action" onclick="nextCard()">Next</button>
+    <button class="action" onclick="toggleHint()">Show Hint</button>
+  </div>
+
+  <script>
+    const flashcards = {
+      education: [
+        {
+          question: "Who argued education promotes social solidarity?",
+          answer: "Émile Durkheim",
+          options: ["Talcott Parsons", "Émile Durkheim", "Paul Willis", "Pierre Bourdieu"],
+          hint: "French functionalist",
+          summary: "Durkheim saw school as creating shared norms and values."
+        },
+        {
+          question: "Who developed the correspondence principle?",
+          answer: "Bowles and Gintis",
+          options: ["Willis", "Durkheim", "Parsons", "Bowles and Gintis"],
+          hint: "Marxist perspective on education",
+          summary: "School prepares workers for capitalist jobs through hidden curriculum."
+        },
+        {
+          question: "Who coined the idea of cultural capital?",
+          answer: "Pierre Bourdieu",
+          options: ["Basil Bernstein", "Paul Willis", "Pierre Bourdieu", "Howard Becker"],
+          hint: "French Marxist sociologist",
+          summary: "Cultural capital explains class-based advantages in school."
+        }
+      ],
+      families: [
+        {
+          question: "Who said the nuclear family is universal?",
+          answer: "George Murdock",
+          options: ["Zaretsky", "Talcott Parsons", "George Murdock", "Ann Oakley"],
+          hint: "Functionalist researcher",
+          summary: "Murdock studied 250 societies and found the nuclear family in all."
+        },
+        {
+          question: "Who criticized the symmetrical family?",
+          answer: "Ann Oakley",
+          options: ["George Murdock", "Ann Oakley", "Parsons", "Willmott & Young"],
+          hint: "Feminist sociologist",
+          summary: "She argued women's housework was far from equal to men’s."
+        },
+        {
+          question: "Who introduced the idea of the pure relationship?",
+          answer: "Anthony Giddens",
+          options: ["Judith Stacey", "Zaretsky", "Anthony Giddens", "Dunne"],
+          hint: "Late modernist",
+          summary: "Relationships today are based on individual satisfaction."
+        }
+      ],
+      crime: [
+        {
+          question: "Who created strain theory?",
+          answer: "Robert Merton",
+          options: ["Albert Cohen", "Robert Merton", "Becker", "Cloward and Ohlin"],
+          hint: "American functionalist",
+          summary: "Strain between goals and means causes deviance."
+        },
+        {
+          question: "Who argued deviance is a result of labelling?",
+          answer: "Howard Becker",
+          options: ["Cicourel", "Cohen", "Becker", "Merton"],
+          hint: "Symbolic interactionist",
+          summary: "Being labelled as deviant can cause further deviance."
+        },
+        {
+          question: "Who said justice is negotiated?",
+          answer: "Aaron Cicourel",
+          options: ["Aaron Cicourel", "Howard Becker", "Heidensohn", "Cloward and Ohlin"],
+          hint: "Labelling theory researcher",
+          summary: "Police apply labels unevenly, especially to working-class youth."
+        }
+      ]
+    };
+
+    let currentTopic = 'education';
+    let currentIndex = -1;
+    let answered = false;
+
+    function selectTopic(topic) {
+      currentTopic = topic;
+      currentIndex = -1;
+      answered = false;
+      document.getElementById('question').innerText = "Click 'Next' to begin";
+      document.getElementById('hint').style.display = 'none';
+      document.getElementById('summary').style.display = 'none';
+      document.getElementById('options').innerHTML = '';
+
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tabs button[onclick="selectTopic('${topic}')"]`).classList.add('active');
+    }
+
+    function shuffleArray(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function nextCard() {
+      const cards = flashcards[currentTopic];
+      currentIndex = (currentIndex + 1) % cards.length;
+      const card = cards[currentIndex];
+      answered = false;
+
+      document.getElementById('question').innerText = card.question;
+      document.getElementById('hint').style.display = 'none';
+      document.getElementById('hint').innerText = "Hint: " + card.hint;
+      document.getElementById('summary').style.display = 'none';
+      document.getElementById('summary').innerText = "Summary: " + card.summary;
+
+      const shuffled = shuffleArray([...card.options]);
+
+      document.getElementById('options').innerHTML = '';
+      shuffled.forEach(option => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerText = option;
+        div.onclick = () => checkAnswer(option, card.answer, div);
+        document.getElementById('options').appendChild(div);
+      });
+    }
+
+    function checkAnswer(selected, correct, element) {
+      if (answered) return;
+      answered = true;
+
+      const options = document.querySelectorAll('.option');
+      options.forEach(opt => {
+        if (opt.innerText === correct) {
+          opt.classList.add('correct');
+        } else if (opt.innerText === selected) {
+          opt.classList.add('incorrect');
+        }
+        opt.style.pointerEvents = 'none';
+      });
+
+      document.getElementById('summary').style.display = 'block';
+    }
+
+    function toggleHint() {
+      const hint = document.getElementById('hint');
+      hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+
+</body>
+</html>
