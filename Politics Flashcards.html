@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Edexcel Politics Quiz (Dark Mode)</title>
+  <title>Politics Flashcards - Multiple Choice Mode</title>
   <link rel="icon" type="image/x-icon" href="/9100957.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,7 +19,34 @@
     h1 {
       font-size: 1.8rem;
     }
+    a {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #03a9f4;
+      color: white;
+      font-size: 1rem;
+      transition: background-color 0.3s;    }
 
+      .action {
+      background-color: #03a9f4;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 10px;
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;    }  
+
+      .action:hover {
+        background-color: #0288d1;
+
+      }
     .tabs {
       margin-bottom: 20px;
       display: flex;
@@ -121,10 +149,21 @@
         font-size: 0.95rem;
       }
     }
+       .correct {
+        background-color: #4caf50;
+        color: #fff;
+        animation: pulse 0.4s ease;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0px #4caf50; }
+        50% { transform: scale(1.05); box-shadow: 0 0 20px #4caf50; }
+        100% { transform: scale(1); box-shadow: 0 0 0px #4caf50; }
+    }
   </style>
 </head>
 <body>
-    <h1>Edexcel Politics Quiz</h1>
+    <h1>Edexcel Politics Flashcards (Multiple Choice)</h1>
   
     <div class="tabs">
       <button onclick="selectTopic('ukPolitics')" class="active">Paper 1: UK Politics</button>
@@ -139,9 +178,12 @@
       <p id="summary" style="display:none;"></p>
       <button class="action" onclick="nextCard()">Next</button>
       <button class="action" onclick="toggleHint()">Show Hint</button>
+      <a href="PoliticsFlashcardsHard.html" class="action" style="text-decoration: none; display: inline-block;">Type Answer</a>
+      <h3 id="scoreDisplay">Score: 0</h3>
     </div>
 
 <script>
+    let score = 0;
     const flashcards = {
       ukPolitics: [
         {
@@ -233,6 +275,8 @@
     let answered = false;
   
     function selectTopic(topic) {
+      score = 0;
+      document.getElementById('scoreDisplay').innerText = "Score: 0";
       currentTopic = topic;
       currentIndex = -1;
       answered = false;
@@ -276,7 +320,15 @@
     function checkAnswer(selected, correct, element) {
       if (answered) return;
       answered = true;
-  
+      if (selected === correct) {
+      score += 1;
+      document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
+      confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 }
+        });
+    }
       const options = document.querySelectorAll('.option');
       options.forEach(opt => {
         if (opt.innerText === correct) {

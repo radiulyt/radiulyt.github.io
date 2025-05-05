@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Politics Flashcards - Type Answer Mode</title>
+  <link rel="icon" type="image/x-icon" href="/9100957.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 1.8rem;
+    }
+    a {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #03a9f4;
+      color: white;
+      font-size: 1rem;
+      transition: background-color 0.3s;    }
+
+      .action {
+      background-color: #03a9f4;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 10px;
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;    }  
+
+      .action:hover {
+        background-color: #0288d1;
+
+      }
+    .tabs {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tabs button {
+      margin: 5px;
+      padding: 10px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #ddd;
+      transition: background-color 0.2s;
+    }
+
+    .tabs button.active,
+    .tabs button:hover {
+      background-color: #6200ea;
+      color: white;
+    }
+    .card {
+      background-color: #1e1e1e;
+      border: 2px solid #444;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 12px;
+    }
+    input.answer-box {
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      margin: 10px auto;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: #2a2a2a;
+      color: #f0f0f0;
+    }
+    button.action {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #03a9f4;
+      color: white;
+      font-size: 1rem;
+    }
+    button.action:hover {
+      background-color: #0288d1;
+    }
+    .correct {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    .incorrect {
+      color: #f44336;
+      font-weight: bold;
+    }
+    #hint, #summary {
+      font-style: italic;
+      color: #bbb;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .option {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+
+      button.action {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+      }
+    }
+       .correct {
+        background-color: #4caf50;
+        color: #fff;
+        animation: pulse 0.4s ease;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0px #4caf50; }
+        50% { transform: scale(1.05); box-shadow: 0 0 20px #4caf50; }
+        100% { transform: scale(1); box-shadow: 0 0 0px #4caf50; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Edexcel Politics Flashcards (Type Answer)</h1>
+  <div class="tabs">
+    <button onclick="selectTopic('ukPolitics')" class="active">Paper 1: UK Politics</button>
+    <button onclick="selectTopic('ukGovernment')">Paper 2: UK Government</button>
+    <button onclick="selectTopic('usaPolitics')">Paper 3: US Politics</button>
+  </div>
+  <div class="card">
+    <h2 id="question">Click "Next" to begin</h2>
+    <input type="text" id="answerInput" class="answer-box" style="display:none" placeholder="Type your answer here..."/>
+    <div id="feedback"></div>
+    <p id="hint" style="display:none"></p>
+    <p id="summary" style="display:none"></p>
+    <button class="action" onclick="submitAnswer()">Submit</button>
+    <button class="action" onclick="nextCard()">Next</button>
+    <button class="action" onclick="toggleHint()">Show Hint</button>
+    <a href="Politics%20Flashcards.html" class="action" style="text-decoration: none; display: inline-block;">Multiple Choice</a>
+    <h3 id="scoreDisplay">Score: 0</h3>
+  </div>
+
+  <script>
+    let score = 0;
+    let currentTopic = 'ukPolitics';
+    let currentIndex = -1;
+    let answered = false;
+
+    const flashcards = {
+  ukPolitics: [
+    {
+      question: "Which theorist is associated with the concept of elitism in politics?",
+      answer: "C. Wright Mills",
+      hint: "Author of 'The Power Elite'",
+      summary: "Mills argued that a small group of elites control key institutions in the U.S."
+    },
+    {
+      question: "Which voting system is used for UK general elections?",
+      answer: "First Past the Post",
+      hint: "Plurality system used for Westminster",
+      summary: "FPTP often leads to strong governments but distorts vote-to-seat ratio."
+    },
+    {
+      question: "Which thinker is known for the idea of positive and negative liberty?",
+      answer: "Isaiah Berlin",
+      hint: "Two concepts of freedom",
+      summary: "Berlin distinguished between freedom from interference (negative) and freedom to self-realise (positive)."
+    },
+    {
+      question: "What electoral system is used in Scottish Parliament elections?",
+      answer: "Additional Member System",
+      hint: "Combines FPTP and PR",
+      summary: "AMS aims to combine constituency representation with proportional fairness."
+    },
+    {
+      question: "Which party is most associated with classical liberalism?",
+      answer: "Liberal Democrats",
+      hint: "Formed from SDP and Liberal Party",
+      summary: "Lib Dems support individual rights, social liberalism, and limited government."
+    }
+  ],
+  ukGovernment: [
+    {
+      question: "What principle underpins the UK’s uncodified constitution?",
+      answer: "Parliamentary sovereignty",
+      hint: "Means Parliament can make or unmake any law",
+      summary: "This principle makes Parliament the supreme legal authority."
+    },
+    {
+      question: "Who appoints ministers to the UK Cabinet?",
+      answer: "The Prime Minister",
+      hint: "The leader of the largest party",
+      summary: "The PM selects ministers, subject to the monarch's formal approval."
+    }
+  ],
+  usaPolitics: [
+    {
+      question: "What term describes the system of shared power in the US Constitution?",
+      answer: "Checks and balances",
+      hint: "Ensures each branch can limit the others",
+      summary: "Prevents any one branch (executive, legislative, judicial) from dominating."
+    },
+    {
+      question: "Which US court case established judicial review?",
+      answer: "Marbury v. Madison",
+      hint: "Early 1800s case",
+      summary: "Set the precedent for courts striking down unconstitutional laws."
+    },
+    {
+      question: "What is a constitutional monarchy?",
+      answer: "A monarchy with powers limited by law or constitution",
+      hint: "Describes the UK's system",
+      summary: "The monarch reigns but does not rule; powers are largely ceremonial."
+    },
+    {
+      question: "What is the role of the House of Lords?",
+      answer: "To scrutinise and revise legislation",
+      hint: "Known as a revising chamber",
+      summary: "The Lords check and refine laws passed by the Commons, though they cannot block them permanently."
+    }
+  ]
+    };
+
+    function selectTopic(topic) {
+      currentTopic = topic;
+      currentIndex = -1;
+      score = 0;
+      answered = false;
+      document.getElementById('scoreDisplay').innerText = "Score: 0";
+      document.getElementById('question').innerText = "Click \"Next\" to begin";
+      document.getElementById('answerInput').style.display = 'none';
+      document.getElementById('feedback').innerText = '';
+      document.getElementById('hint').style.display = 'none';
+      document.getElementById('summary').style.display = 'none';
+
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tabs button[onclick="selectTopic('${topic}')"]`).classList.add('active');
+    }
+
+    function nextCard() {
+      const cards = flashcards[currentTopic];
+      currentIndex = (currentIndex + 1) % cards.length;
+      const card = cards[currentIndex];
+      answered = false;
+
+      document.getElementById('question').innerText = card.question;
+      document.getElementById('hint').innerText = 'Hint: ' + card.hint;
+      document.getElementById('hint').style.display = 'none';
+      document.getElementById('summary').innerText = 'Summary: ' + card.summary;
+      document.getElementById('summary').style.display = 'none';
+
+      const input = document.getElementById('answerInput');
+      input.value = '';
+      input.style.display = 'block';
+      input.focus();
+
+      document.getElementById('feedback').innerText = '';
+    }
+
+    function submitAnswer() {
+      if (answered) return;
+      const card = flashcards[currentTopic][currentIndex];
+      const userAnswer = document.getElementById('answerInput').value.trim();
+      const correctAnswer = card.answer.trim();
+
+      const feedback = document.getElementById('feedback');
+      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+        score++;
+        document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
+        confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 }
+        });
+        feedback.innerText = "Correct!";
+        feedback.className = 'correct';
+
+      } else {
+        feedback.innerText = `Incorrect. The correct answer was: ${correctAnswer}`;
+        feedback.className = 'incorrect';
+      }
+      document.getElementById('summary').style.display = 'block';
+      answered = true;
+    }
+
+    function toggleHint() {
+      const hint = document.getElementById('hint');
+      hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

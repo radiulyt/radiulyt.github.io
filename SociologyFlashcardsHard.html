@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sociology Flashcards - Type Answer Mode</title>
+  <link rel="icon" type="image/x-icon" href="/9100957.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 1.8rem;
+    }
+    a {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #03a9f4;
+      color: white;
+      font-size: 1rem;
+      transition: background-color 0.3s;    }
+
+      .action {
+      background-color: #03a9f4;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 10px;
+      text-align: center;
+      display: inline-block;
+      text-decoration: none;    }  
+
+      .action:hover {
+        background-color: #0288d1;
+
+      }
+    .tabs {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .tabs button {
+      margin: 5px;
+      padding: 10px 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #333;
+      color: #ddd;
+      transition: background-color 0.2s;
+    }
+
+    .tabs button.active,
+    .tabs button:hover {
+      background-color: #6200ea;
+      color: white;
+    }
+    .card {
+      background-color: #1e1e1e;
+      border: 2px solid #444;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 12px;
+    }
+    input.answer-box {
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      margin: 10px auto;
+      border-radius: 8px;
+      border: 1px solid #555;
+      background-color: #2a2a2a;
+      color: #f0f0f0;
+    }
+    button.action {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #03a9f4;
+      color: white;
+      font-size: 1rem;
+    }
+    button.action:hover {
+      background-color: #0288d1;
+    }
+    .correct {
+      color: #4caf50;
+      font-weight: bold;
+    }
+    .incorrect {
+      color: #f44336;
+      font-weight: bold;
+    }
+    #hint, #summary {
+      font-style: italic;
+      color: #bbb;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .option {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+
+      button.action {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+      }
+    }
+       .correct {
+        background-color: #4caf50;
+        color: #fff;
+        animation: pulse 0.4s ease;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0px #4caf50; }
+        50% { transform: scale(1.05); box-shadow: 0 0 20px #4caf50; }
+        100% { transform: scale(1); box-shadow: 0 0 0px #4caf50; }
+    }
+  </style>
+</head>
+<body>
+  <h1>AQA Sociology Flashcards (Type Answer)</h1>
+  <div class="tabs">
+    <button onclick="selectTopic('education')" class="active">Paper 1: Education</button>
+    <button onclick="selectTopic('families')">Paper 2: Families</button>
+    <button onclick="selectTopic('crime')">Paper 3: Crime</button>
+  </div>
+  <div class="card">
+    <h2 id="question">Click "Next" to begin</h2>
+    <input type="text" id="answerInput" class="answer-box" style="display:none" placeholder="Type your answer here..."/>
+    <div id="feedback"></div>
+    <p id="hint" style="display:none"></p>
+    <p id="summary" style="display:none"></p>
+    <button class="action" onclick="submitAnswer()">Submit</button>
+    <button class="action" onclick="nextCard()">Next</button>
+    <button class="action" onclick="toggleHint()">Show Hint</button>
+    <a href="Sociology%20Flashcards.html" class="action" style="text-decoration: none; display: inline-block;">Multiple Choice</a>
+    <h3 id="scoreDisplay">Score: 0</h3>
+  </div>
+
+  <script>
+    let score = 0;
+    let currentTopic = 'education';
+    let currentIndex = -1;
+    let answered = false;
+
+    const flashcards = {
+      education: [
+        { question: "Who argued education promotes social solidarity?", answer: "Émile Durkheim", hint: "French functionalist", summary: "Durkheim saw school as creating shared norms and values." },
+        { question: "Who developed the correspondence principle?", answer: "Bowles and Gintis", hint: "Marxist perspective on education", summary: "School prepares workers for capitalist jobs through hidden curriculum." },
+        { question: "Who coined the idea of cultural capital?", answer: "Pierre Bourdieu", hint: "French Marxist sociologist", summary: "Cultural capital explains class-based advantages in school." }
+      ],
+      families: [
+        { question: "Who said the nuclear family is universal?", answer: "George Murdock", hint: "Functionalist researcher", summary: "Murdock studied 250 societies and found the nuclear family in all." },
+        { question: "Who criticized the symmetrical family?", answer: "Ann Oakley", hint: "Feminist sociologist", summary: "She argued women's housework was far from equal to men’s." }
+      ],
+      crime: [
+        { question: "Who created strain theory?", answer: "Robert Merton", hint: "American functionalist", summary: "Strain between goals and means causes deviance." },
+        { question: "Who argued deviance is a result of labelling?", answer: "Howard Becker", hint: "Symbolic interactionist", summary: "Being labelled as deviant can cause further deviance." }
+      ]
+    };
+
+    function selectTopic(topic) {
+      currentTopic = topic;
+      currentIndex = -1;
+      score = 0;
+      answered = false;
+      document.getElementById('scoreDisplay').innerText = "Score: 0";
+      document.getElementById('question').innerText = "Click \"Next\" to begin";
+      document.getElementById('answerInput').style.display = 'none';
+      document.getElementById('feedback').innerText = '';
+      document.getElementById('hint').style.display = 'none';
+      document.getElementById('summary').style.display = 'none';
+
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tabs button[onclick="selectTopic('${topic}')"]`).classList.add('active');
+    }
+
+    function nextCard() {
+      const cards = flashcards[currentTopic];
+      currentIndex = (currentIndex + 1) % cards.length;
+      const card = cards[currentIndex];
+      answered = false;
+
+      document.getElementById('question').innerText = card.question;
+      document.getElementById('hint').innerText = 'Hint: ' + card.hint;
+      document.getElementById('hint').style.display = 'none';
+      document.getElementById('summary').innerText = 'Summary: ' + card.summary;
+      document.getElementById('summary').style.display = 'none';
+
+      const input = document.getElementById('answerInput');
+      input.value = '';
+      input.style.display = 'block';
+      input.focus();
+
+      document.getElementById('feedback').innerText = '';
+    }
+
+    function submitAnswer() {
+      if (answered) return;
+      const card = flashcards[currentTopic][currentIndex];
+      const userAnswer = document.getElementById('answerInput').value.trim();
+      const correctAnswer = card.answer.trim();
+
+      const feedback = document.getElementById('feedback');
+      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+        score++;
+        document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
+        confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 }
+        });
+        feedback.innerText = "Correct!";
+        feedback.className = 'correct';
+
+      } else {
+        feedback.innerText = `Incorrect. The correct answer was: ${correctAnswer}`;
+        feedback.className = 'incorrect';
+      }
+      document.getElementById('summary').style.display = 'block';
+      answered = true;
+    }
+
+    function toggleHint() {
+      const hint = document.getElementById('hint');
+      hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>
