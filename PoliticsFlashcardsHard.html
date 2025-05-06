@@ -235,7 +235,19 @@
       answer: "AMS",
       hint: "Used in Scotland",
       summary: "AMS improves proportionality by combining constituency and regional list elements."
-    } 
+    },
+    {
+      question: "Who developed the concept of 'two-party dominance' in the UK?",
+      answer: ["Robert McKenzie", "McKenzie"]
+    },
+    {
+      question: "Which political thinker is known for his work on 'The Rise of the Meritocracy'?",
+      answer: ["Michael Young", "Young"]
+    },
+    {
+      question: "Who coined the term 'catch-all party'?",
+      answer: ["Otto Kirchheimer", "Kirchheimer"]
+    }
   ],
   ukGovernment: [
     {
@@ -261,6 +273,18 @@
       answer: "Executive",
       hint: "Led by the Prime Minister",
       summary: "The executive, particularly the Prime Minister and Cabinet, directs government policy and legislation."
+    },
+    {
+      question: "Who argued that Parliament has been marginalised by the executive?",
+      answer: ["Philip Norton", "Norton"]
+    },
+    {
+      question: "Which scholar criticised the fusion of powers in the UK system?",
+      answer: ["Walter Bagehot", "Bagehot"]
+    },
+    {
+      question: "Who developed the concept of 'elective dictatorship'?",
+      answer: ["Lord Hailsham", "Hailsham", "Quintin Hogg"]
     }
   ],
   
@@ -306,6 +330,18 @@
       answer: "Senate",
       hint: "One of the two chambers in Congress",
       summary: "The US Senate must approve treaties by a two-thirds vote, while in the UK, treaty ratification is a royal prerogative."
+    },
+    {
+      question: "Who argued that the US Constitution encourages gridlock?",
+      answer: ["Francis Fukuyama", "Fukuyama"]
+    },
+    {
+      question: "Which scholar is associated with the idea of 'imperial presidency'?",
+      answer: ["Arthur Schlesinger", "Schlesinger"]
+    },
+    {
+      question: "Who highlighted the significance of money in US elections?",
+      answer: ["Robert Dahl", "Dahl"]
     }
   ]
 };
@@ -352,11 +388,19 @@
 
     function submitAnswer() {
       if (answered) return;
+
       const card = flashcards[currentTopic][currentIndex];
-      const userAnswer = document.getElementById('answerInput').value.trim();
+      let userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
+      userAnswer = userAnswer.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
       const feedback = document.getElementById('feedback');
       const keywords = Array.isArray(card.answer) ? card.answer : [card.answer];
-      const isCorrect = keywords.some(keyword => userAnswer.includes(keyword.toLowerCase()));
+      const correctAnswer = Array.isArray(card.answer) ? card.answer.join(', ') : card.answer;
+
+      const isCorrect = keywords.some(keyword => {
+      const cleanKeyword = keyword.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return userAnswer.includes(cleanKeyword);
+  });
       if (isCorrect) {
         score++;
         document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
@@ -372,8 +416,8 @@
         feedback.innerText = `Incorrect. The correct answer was: ${correctAnswer}`;
         feedback.className = 'incorrect';
       }
-      document.getElementById('summary').style.display = 'block';
       answered = true;
+      document.getElementById('summary').style.display = 'block';
     }
 
     function toggleHint() {
