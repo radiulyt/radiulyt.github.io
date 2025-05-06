@@ -170,7 +170,7 @@
 
     const flashcards = {
       education: [
-        { question: "Who argued education promotes social solidarity?", answer: "Émile Durkheim", hint: "French functionalist", summary: "Durkheim saw school as creating shared norms and values." },
+        { question: "Who argued education promotes social solidarity?", answer: ["Émile Durkheim","Durkheim"], hint: "French functionalist", summary: "Durkheim saw school as creating shared norms and values." },
         { question: "Who developed the correspondence principle?", answer: "Bowles and Gintis", hint: "Marxist perspective on education", summary: "School prepares workers for capitalist jobs through hidden curriculum." },
         { question: "Who coined the idea of cultural capital?", answer: "Pierre Bourdieu", hint: "French Marxist sociologist", summary: "Cultural capital explains class-based advantages in school." },
         { question: "Which sociologist argued that schools are 'meritocratic institutions' that promote value consensus?", answer: "Parsons", hint: "He viewed education as a bridge between home and wider society", summary: "Parsons believed schools teach universalistic values and act as a bridge from family to society."},
@@ -295,12 +295,20 @@
 
     function submitAnswer() {
       if (answered) return;
+
       const card = flashcards[currentTopic][currentIndex];
-      const userAnswer = document.getElementById('answerInput').value.trim();
-      const correctAnswer = card.answer.trim();
+      let userAnswer = document.getElementById('answerInput').value.trim().toLowerCase();
+      userAnswer = userAnswer.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
       const feedback = document.getElementById('feedback');
-      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+      const keywords = Array.isArray(card.answer) ? card.answer : [card.answer];
+      const correctAnswer = Array.isArray(card.answer) ? card.answer.join(', ') : card.answer;
+
+      const isCorrect = keywords.some(keyword => {
+      const cleanKeyword = keyword.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      return userAnswer.includes(cleanKeyword);
+  });
+      if (isCorrect) {
         score++;
         document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
         confetti({
@@ -315,8 +323,8 @@
         feedback.innerText = `Incorrect. The correct answer was: ${correctAnswer}`;
         feedback.className = 'incorrect';
       }
-      document.getElementById('summary').style.display = 'block';
       answered = true;
+      document.getElementById('summary').style.display = 'block';
     }
 
     function toggleHint() {

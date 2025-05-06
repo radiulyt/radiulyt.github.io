@@ -172,37 +172,37 @@
   ukPolitics: [
     {
       question: "Which theorist is associated with the concept of elitism in politics?",
-      answer: "C. Wright Mills",
+      answer: ["C. Wright Mills","Mills"],
       hint: "Author of 'The Power Elite'",
       summary: "Mills argued that a small group of elites control key institutions in the U.S."
     },
     {
       question: "Which voting system is used for UK general elections?",
-      answer: "First Past the Post",
+      answer: ["First Past the Post","FPTP"],
       hint: "Plurality system used for Westminster",
       summary: "FPTP often leads to strong governments but distorts vote-to-seat ratio."
     },
     {
       question: "Which thinker is known for the idea of positive and negative liberty?",
-      answer: "Isaiah Berlin",
+      answer: ["Isaiah Berlin","Berlin"],
       hint: "Two concepts of freedom",
       summary: "Berlin distinguished between freedom from interference (negative) and freedom to self-realise (positive)."
     },
     {
       question: "What electoral system is used in Scottish Parliament elections?",
-      answer: "Additional Member System",
+      answer: ["Additional Member System","AMS"],
       hint: "Combines FPTP and PR",
       summary: "AMS aims to combine constituency representation with proportional fairness."
     },
     {
       question: "Which party is most associated with classical liberalism?",
-      answer: "Liberal Democrats",
+      answer: ["Liberal Democrats","Lib Dems"],
       hint: "Formed from SDP and Liberal Party",
       summary: "Lib Dems support individual rights, social liberalism, and limited government."
     },
     {
       question: "What is a key difference between the UK and US constitutions?",
-      answer: "The UK constitution is uncodified, while the US constitution is codified",
+      answer: ["The UK constitution is uncodified, while the US constitution is codified","Codified"],
       hint: "One is written in a single document, the other is not",
       summary: "The UK’s constitution is made up of statutes, conventions and legal documents, while the US has a single written constitution."
     },
@@ -221,21 +221,18 @@
     {
       question: "Which ideology advocates for collective ownership and economic equality?",
       answer: "Socialism",
-      options: ["Liberalism", "Socialism", "Conservatism", "Anarchism"],
       hint: "Karl Marx is often cited as a founder",
       summary: "Socialism seeks to reduce inequality by redistributing wealth and limiting private ownership."
     },
     {
       question: "Who is considered a key thinker in modern liberalism?",
-      answer: "John Rawls",
-      options: ["John Stuart Mill", "Karl Marx", "John Rawls", "Thomas Hobbes"],
+      answer: ["John Rawls","Rawls"],
       hint: "He wrote 'A Theory of Justice'",
       summary: "Rawls argued for a fair distribution of resources through the 'veil of ignorance'."
     },
     {
       question: "Which electoral system is more proportional: AMS or FPTP?",
       answer: "AMS",
-      options: ["FPTP", "AMS", "AV", "SV"],
       hint: "Used in Scotland",
       summary: "AMS improves proportionality by combining constituency and regional list elements."
     } 
@@ -249,13 +246,13 @@
     },
     {
       question: "Who appoints ministers to the UK Cabinet?",
-      answer: "The Prime Minister",
+      answer: ["The Prime Minister","PM","Prime Minister"],
       hint: "The leader of the largest party",
       summary: "The PM selects ministers, subject to the monarch's formal approval."
     },
     {
       question: "What is a key difference between the UK and US constitutions?",
-      answer: "The UK constitution is uncodified, while the US constitution is codified",
+      answer: ["The UK constitution is uncodified, while the US constitution is codified","Codified"],
       hint: "One is written in a single document, the other is not",
       summary: "The UK’s constitution is made up of statutes, conventions and legal documents, while the US has a single written constitution."
     },
@@ -282,7 +279,7 @@
     },
     {
       question: "What is a constitutional monarchy?",
-      answer: "A monarchy with powers limited by law or constitution",
+      answer: ["A monarchy with powers limited by law or constitution","limited by law","figurehead"],
       hint: "Describes the UK's system",
       summary: "The monarch reigns but does not rule; powers are largely ceremonial."
     },
@@ -311,8 +308,12 @@
       summary: "The US Senate must approve treaties by a two-thirds vote, while in the UK, treaty ratification is a royal prerogative."
     }
   ]
-    };
-
+};
+    function isCloseEnough(userInput, correctAnswer) {
+        const threshold = 2; // Max number of differences allowed
+        const distance = levenshteinDistance(userInput.trim().toLowerCase(), correctAnswer.trim().toLowerCase());
+        return distance <= threshold;
+  }
     function selectTopic(topic) {
       currentTopic = topic;
       currentIndex = -1;
@@ -353,10 +354,10 @@
       if (answered) return;
       const card = flashcards[currentTopic][currentIndex];
       const userAnswer = document.getElementById('answerInput').value.trim();
-      const correctAnswer = card.answer.trim();
-
       const feedback = document.getElementById('feedback');
-      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+      const keywords = Array.isArray(card.answer) ? card.answer : [card.answer];
+      const isCorrect = keywords.some(keyword => userAnswer.includes(keyword.toLowerCase()));
+      if (isCorrect) {
         score++;
         document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
         confetti({
