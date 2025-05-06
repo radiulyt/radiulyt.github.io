@@ -362,6 +362,8 @@
       document.getElementById('hint').style.display = 'none';
       document.getElementById('summary').style.display = 'none';
 
+      flashcards[currentTopic] = shuffleArray(flashcards[currentTopic]);
+
       document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
       document.querySelector(`.tabs button[onclick="selectTopic('${topic}')"]`).classList.add('active');
     }

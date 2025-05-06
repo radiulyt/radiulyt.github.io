@@ -460,6 +460,8 @@
       document.getElementById('summary').style.display = 'none';
       document.getElementById('options').innerHTML = '';
 
+      flashcards[currentTopic] = shuffleArray(flashcards[currentTopic]);
+
       document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
       document.querySelector(`.tabs button[onclick="selectTopic('${topic}')"]`).classList.add('active');
     }
